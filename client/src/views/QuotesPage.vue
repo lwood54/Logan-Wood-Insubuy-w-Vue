@@ -3,6 +3,7 @@
 		<h1>{{pageTitle}}</h1>
 		<button @click="sort('price')">Sort by Price</button>
 		<button @click="sort('name')">Sort by Name</button>
+		<compare-modal>Modal Children Will Go Here...</compare-modal>
 		<div v-for="quote in modQuotes" :key="quote.id">
 			<plan :plan="quote" @planID="handleClicked"/>
 		</div>
@@ -11,6 +12,7 @@
 
 <script>
 	import Plan from "../components/Plan.vue";
+	import CompareModal from "../components/CompareModal.vue";
 
 	export default {
 		data: function() {
@@ -76,7 +78,8 @@
 				});
 		},
 		components: {
-			plan: Plan
+			plan: Plan,
+			"compare-modal": CompareModal
 		}
 	};
 </script>
