@@ -3,6 +3,14 @@
 		<h1>{{pageTitle}}</h1>
 		<button @click="sort('price')">Sort by Price</button>
 		<button @click="sort('name')">Sort by Name</button>
+		<select v-model="filter">
+			<option disabled value>Please select one</option>
+			<option>Policy Max</option>
+			<option>Best Seller</option>
+			<option>Type</option>
+			<option>Section</option>
+		</select>
+		<span>Filtered by: {{ filter }}</span>
 		<compare-modal>Modal Children Will Go Here...</compare-modal>
 		<div v-for="quote in modQuotes" :key="quote.id">
 			<plan :plan="quote" @planID="handleClicked"/>
@@ -20,7 +28,8 @@
 				pageTitle: "Quotes",
 				quotes: [],
 				modQuotes: [],
-				showOriginalQuotes: true
+				showOriginalQuotes: true,
+				filter: ""
 			};
 		},
 		computed: {
@@ -51,6 +60,9 @@
 					// plans have same value so no change
 					return 0;
 				});
+			},
+			policyMaxFiltered: function() {
+				this.modQuotes = [...this.quotes];
 			}
 		},
 		methods: {
