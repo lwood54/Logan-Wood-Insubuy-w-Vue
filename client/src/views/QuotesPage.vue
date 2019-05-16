@@ -5,12 +5,16 @@
 		<button @click="sort('name')">Sort by Name</button>
 		<select v-model="filter">
 			<option disabled value>Please select one</option>
-			<option>Policy Max</option>
+			<option>Reset</option>
 			<option>Best Seller</option>
-			<option>Type</option>
-			<option>Section</option>
+			<option>Fixed</option>
+			<option>Comprehensive</option>
+			<option disabled value>---- Section ----</option>
+			<option>Travel Medical</option>
+			<option>International Travel Medical</option>
+			<option>Student Medical</option>
+			<option>J1 Medical</option>
 		</select>
-		<span>Filtered by: {{ filter }}</span>
 		<compare-modal>Modal Children Will Go Here...</compare-modal>
 		<div v-for="quote in modQuotes" :key="quote.id">
 			<plan :plan="quote" @planID="handleClicked"/>
@@ -34,7 +38,8 @@
 		},
 		computed: {
 			priceSorted: function() {
-				let newQuotes = [...this.quotes];
+				// let newQuotes = [...this.quotes]; // will remove any filter, then will sort
+				let newQuotes = [...this.modQuotes]; // allows for sorting after filter
 				return newQuotes.sort((a, b) => {
 					// sort by price value
 					if (a.price > b.price) {
@@ -47,7 +52,8 @@
 				});
 			},
 			nameSorted: function() {
-				let newQuotes = [...this.quotes];
+				// let newQuotes = [...this.quotes]; // will remove any filter, then will sort
+				let newQuotes = [...this.modQuotes]; // allows for sorting after filter
 				return newQuotes.sort((a, b) => {
 					// if unicode value of a.name > b.name then return positive for sorting
 					if (a.name > b.name) {
@@ -60,9 +66,54 @@
 					// plans have same value so no change
 					return 0;
 				});
-			},
-			policyMaxFiltered: function() {
-				this.modQuotes = [...this.quotes];
+			}
+		},
+		watch: {
+			filter: function(val) {
+				switch (val) {
+					case "Best Seller":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.bestSellers
+						);
+						break;
+					case "Fixed":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.type === "Fixed"
+						);
+						break;
+					case "Comprehensive":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.type === "Comprehensive"
+						);
+						break;
+					case "Travel Medical":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.section === "Travel Medical"
+						);
+						break;
+					case "International Travel Medical":
+						this.modQuotes = this.quotes.filter(
+							quote =>
+								quote.section ===
+								"International Travel Medical"
+						);
+						break;
+					case "Student Medical":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.section === "Student Medical"
+						);
+						break;
+					case "J1 Medical":
+						this.modQuotes = this.quotes.filter(
+							quote => quote.section === "J1 Medical"
+						);
+						break;
+					case "Reset":
+						this.modQuotes = [...this.quotes];
+						break;
+					default:
+						return this.modQuotes;
+				}
 			}
 		},
 		methods: {
