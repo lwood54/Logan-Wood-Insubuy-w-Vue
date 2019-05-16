@@ -1,6 +1,13 @@
 <template>
 	<div class="plan-card" @click="handleClicked">
-		<h1 class="plan-title">{{plan.name}}</h1>
+		<h1
+			class="plan-title"
+			:class="{
+                        'travel-medical': plan.section === 'Travel Medical',
+                        'student-medical': plan.section === 'Student Medical',
+                        'j1-medical': plan.section === 'J1 Medical'
+                  }"
+		>{{plan.name}}</h1>
 		<p class="description">{{plan.description}}</p>
 		<h4 class="price">Price: ${{plan.price}}</h4>
 		<h4 class="package-type">Type: {{plan.type}}</h4>
@@ -37,7 +44,8 @@
 
 	.plan-card {
 		border: 1px solid rgba(165, 165, 165, 0.575);
-		width: 45%;
+		width: 400px;
+		height: 300px;
 		margin: 10px auto;
 		cursor: pointer;
 	}
@@ -57,5 +65,15 @@
 	.section,
 	.best-sellers {
 		padding: 0 10px;
+	}
+
+	.travel-medical {
+		background-color: rgb(52, 44, 109);
+	}
+	.student-medical {
+		background-color: rgb(0, 161, 221);
+	}
+	.j1-medical {
+		background-color: rgb(145, 139, 134);
 	}
 </style>

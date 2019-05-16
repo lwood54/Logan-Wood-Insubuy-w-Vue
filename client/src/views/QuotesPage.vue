@@ -1,10 +1,8 @@
 <template>
 	<div>
 		<h1>{{pageTitle}}</h1>
-		<button @click="sort('price')">Sort by Price</button>
-		<button @click="sort('name')">Sort by Name</button>
 		<select v-model="filter">
-			<option disabled value>Please select one</option>
+			<option disabled value>Select a Filter</option>
 			<option>Reset</option>
 			<option>Best Seller</option>
 			<option>Fixed</option>
@@ -15,9 +13,14 @@
 			<option>Student Medical</option>
 			<option>J1 Medical</option>
 		</select>
+		<button @click="sort('price')">Sort by Price</button>
+		<button @click="sort('name')">Sort by Name</button>
+		<button @click="toggleView">List / Grid</button>
 		<compare-modal>Modal Children Will Go Here...</compare-modal>
-		<div v-for="quote in modQuotes" :key="quote.id">
-			<plan :plan="quote" @planID="handleClicked"/>
+		<div :class="{grid: gridView}">
+			<div v-for="quote in modQuotes" :key="quote.id">
+				<plan :plan="quote" @planID="handleClicked"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -33,7 +36,8 @@
 				quotes: [],
 				modQuotes: [],
 				showOriginalQuotes: true,
-				filter: ""
+				filter: "",
+				gridView: false
 			};
 		},
 		computed: {
@@ -126,6 +130,9 @@
 				} else if (type === "name") {
 					this.modQuotes = this.nameSorted;
 				}
+			},
+			toggleView: function() {
+				this.gridView = !this.gridView;
 			}
 		},
 		created: function() {
@@ -147,6 +154,12 @@
 	};
 </script>
 
-<style>
+<style lang="scss" scoped>
+	.grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	}
 </style>
 
