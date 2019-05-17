@@ -1,18 +1,22 @@
 <template>
 	<div>
-		<h1>{{pageTitle}}</h1>
-		<select v-model="filter">
-			<option disabled value>Select a Filter</option>
-			<option>Reset</option>
-			<option>Best Seller</option>
-			<option>Fixed</option>
-			<option>Comprehensive</option>
-			<option disabled value>---- Section ----</option>
-			<option>Travel Medical</option>
-			<option>International Travel Medical</option>
-			<option>Student Medical</option>
-			<option>J1 Medical</option>
-		</select>
+		<backdrop :activateModal="activateModal" @clearBackdrop="handleClearModal"/>
+		<h1 class="page-title">{{pageTitle}}</h1>
+		<div class="filter-select">
+			<select v-model="filter">
+				<option disabled value>Select a Filter</option>
+				<option>Reset</option>
+				<option>Best Seller</option>
+				<option>Fixed</option>
+				<option>Comprehensive</option>
+				<option disabled value>---- Section ----</option>
+				<option>Travel Medical</option>
+				<option>International Travel Medical</option>
+				<option>Student Medical</option>
+				<option>J1 Medical</option>
+			</select>
+		</div>
+
 		<button @click="sort('price')" class="quote-page-button">Sort by Price</button>
 		<button @click="sort('name')" class="quote-page-button">Sort by Name</button>
 		<button @click="toggleView" class="quote-page-button">List / Grid</button>
@@ -33,11 +37,12 @@
 <script>
 	import Plan from "../components/Plan.vue";
 	import CompareModal from "../components/CompareModal.vue";
+	import Backdrop from "../components/Backdrop.vue";
 
 	export default {
 		data: function() {
 			return {
-				pageTitle: "Quotes",
+				pageTitle: "Insubuy Quotes",
 				quotes: [],
 				modQuotes: [],
 				filter: "",
@@ -189,12 +194,19 @@
 		},
 		components: {
 			plan: Plan,
-			"compare-modal": CompareModal
+			"compare-modal": CompareModal,
+			backdrop: Backdrop
 		}
 	};
 </script>
 
 <style lang="scss" scoped>
+	.page-title {
+		text-align: center;
+		font-family: "Trebuchet MS", Helvetica, sans-serif;
+		color: #406a95;
+		font-size: 2.5rem;
+	}
 	.grid {
 		display: flex;
 		flex-direction: row;
@@ -209,6 +221,24 @@
 		color: #fff;
 		margin: 2px 5px;
 		cursor: pointer;
+	}
+
+	.filter-select {
+		display: flex;
+		flex-direction: column;
+		margin: 10px 5px;
+		width: 175px;
+		select {
+			padding: 8px;
+			border-radius: 2px;
+			border: 0.5px solid rgba(187, 185, 185, 0.623);
+			height: 50px;
+			background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+				no-repeat right #fff;
+			-webkit-appearance: none;
+			background-position-x: 95%;
+			cursor: pointer;
+		}
 	}
 </style>
 

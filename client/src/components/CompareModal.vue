@@ -36,7 +36,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		z-index: 500;
+		z-index: 1000;
 		background-color: white;
 		width: 80%;
 		border: 1px solid #ccc;

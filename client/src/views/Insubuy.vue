@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<second-form :formTitle="title"/>
+		<quotes-form :formTitle="title"/>
 	</div>
 </template>
 
@@ -10,11 +10,11 @@
 	export default {
 		data: function() {
 			return {
-				title: "Insubuy 2"
+				title: "Travel Insurance"
 			};
 		},
 		components: {
-			"second-form": QuotesForm
+			"quotes-form": QuotesForm
 		}
 	};
 </script>

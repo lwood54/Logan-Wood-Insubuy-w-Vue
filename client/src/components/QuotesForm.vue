@@ -60,7 +60,6 @@
 	export default {
 		data: function() {
 			return {
-				formTitle: "Travel Insurance",
 				startDate: "",
 				endDate: "",
 				isDateRangeValid: false,
@@ -84,6 +83,12 @@
 				resetMailingState: false,
 				submissionError: false
 			};
+		},
+		props: {
+			formTitle: {
+				type: String,
+				default: "Form"
+			}
 		},
 		methods: {
 			checkAllFieldsValidation: function() {
@@ -193,6 +198,7 @@
 		border-radius: 2px;
 		width: 90%;
 		margin: auto;
+		margin-top: 20px;
 
 		label {
 			margin-top: 10px;
