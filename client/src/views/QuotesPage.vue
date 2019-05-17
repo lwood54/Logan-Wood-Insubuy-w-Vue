@@ -16,10 +16,15 @@
 		<button @click="sort('price')">Sort by Price</button>
 		<button @click="sort('name')">Sort by Name</button>
 		<button @click="toggleView">List / Grid</button>
-		<compare-modal>Modal Children Will Go Here...</compare-modal>
+		<button @click="comparePlans">Compare Selected Plans</button>
+		<compare-modal :activateModal="activateModal">
+			<div v-for="quote in compareQuotes" :key="quote.id">
+				<plan :plan="quote" @planID="handleClicked" :compareGroupFull="compareGroupFull"/>
+			</div>
+		</compare-modal>
 		<div :class="{grid: gridView}">
 			<div v-for="quote in modQuotes" :key="quote.id">
-				<plan :plan="quote" @planID="handleClicked"/>
+				<plan :plan="quote" @planID="handleClicked" :compareGroupFull="compareGroupFull"/>
 			</div>
 		</div>
 	</div>
@@ -37,7 +42,10 @@
 				modQuotes: [],
 				showOriginalQuotes: true,
 				filter: "",
-				gridView: false
+				gridView: false,
+				compareGroup: [],
+				compareQuotes: [],
+				activateModal: false
 			};
 		},
 		computed: {
@@ -70,6 +78,9 @@
 					// plans have same value so no change
 					return 0;
 				});
+			},
+			compareGroupFull: function() {
+				return this.compareGroup.length === 4;
 			}
 		},
 		watch: {
@@ -122,7 +133,31 @@
 		},
 		methods: {
 			handleClicked: function(val) {
-				console.log("from quotes-page: ", val.planID);
+				if (this.compareGroup.length < 4 && val.selected) {
+					// if group is not full and plan was selected, then add it to group
+					this.compareGroup.push(val.planID);
+				} else {
+					// if plan was selected, then we can unselect it by filtering out
+					// only those plans that don't have matching id
+					this.compareGroup = this.compareGroup.filter(
+						id => id !== val.planID
+					);
+				}
+			},
+			comparePlans: function() {
+				if (
+					this.compareGroup.length > 1 &&
+					this.compareGroup.length <= 4
+				) {
+					this.quotes.forEach(quote => {
+						this.compareGroup.forEach(id => {
+							if (id === quote.id) {
+								this.compareQuotes.push(quote);
+							}
+						});
+					});
+					this.activateModal = true;
+				}
 			},
 			sort: function(type) {
 				if (type === "price") {

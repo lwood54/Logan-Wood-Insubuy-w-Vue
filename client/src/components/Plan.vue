@@ -1,5 +1,5 @@
 <template>
-	<div class="plan-card" @click="handleClicked">
+	<div class="plan-card" @click="handleClicked" :class="{'selected': clicked}">
 		<h1
 			class="plan-title"
 			:class="{
@@ -20,18 +20,41 @@
 	export default {
 		data: function() {
 			return {
-				title: ""
+				title: "",
+				clicked: false
 			};
 		},
 		props: {
 			plan: {
 				type: Object,
 				required: true
+			},
+			compareGroupFull: {
+				type: Boolean,
+				required: true
 			}
 		},
 		methods: {
 			handleClicked: function() {
-				this.$emit("planID", { planID: this.plan.id });
+				if (!this.compareGroupFull && !this.clicked) {
+					this.clicked = true;
+					this.$emit("planID", {
+						planID: this.plan.id,
+						selected: this.clicked
+					});
+				} else if (!this.compareGroupFull && this.clicked) {
+					this.clicked = false;
+					this.$emit("planID", {
+						planID: this.plan.id,
+						selected: this.clicked
+					});
+				} else if (this.compareGroupFull && this.clicked) {
+					this.clicked = false;
+					this.$emit("planID", {
+						planID: this.plan.id,
+						selected: this.clicked
+					});
+				}
 			}
 		}
 	};
@@ -48,6 +71,7 @@
 		height: 300px;
 		margin: 10px auto;
 		cursor: pointer;
+		border-radius: 4px;
 	}
 
 	.plan-title {
@@ -75,5 +99,10 @@
 	}
 	.j1-medical {
 		background-color: rgb(145, 139, 134);
+	}
+
+	.selected {
+		border: 2px solid green;
+		background-color: rgba(109, 180, 119, 0.349);
 	}
 </style>
