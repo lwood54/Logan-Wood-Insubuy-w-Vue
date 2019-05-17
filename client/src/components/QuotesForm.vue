@@ -254,6 +254,7 @@
 					no-repeat right #fff;
 				-webkit-appearance: none;
 				background-position-x: 95%;
+				cursor: pointer;
 			}
 		}
 
