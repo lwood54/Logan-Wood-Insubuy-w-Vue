@@ -13,16 +13,16 @@
 			<option>Student Medical</option>
 			<option>J1 Medical</option>
 		</select>
-		<button @click="sort('price')">Sort by Price</button>
-		<button @click="sort('name')">Sort by Name</button>
-		<button @click="toggleView">List / Grid</button>
-		<button @click="comparePlans">Compare Selected Plans</button>
-		<compare-modal :activateModal="activateModal">
+		<button @click="sort('price')" class="quote-page-button">Sort by Price</button>
+		<button @click="sort('name')" class="quote-page-button">Sort by Name</button>
+		<button @click="toggleView" class="quote-page-button">List / Grid</button>
+		<button @click="comparePlans" class="quote-page-button">Compare Selected Plans</button>
+		<compare-modal :activateModal="activateModal" @clearModal="handleClearModal">
 			<div v-for="quote in compareQuotes" :key="quote.id">
 				<plan :plan="quote" @planID="handleClicked" :compareGroupFull="compareGroupFull"/>
 			</div>
 		</compare-modal>
-		<div :class="{grid: gridView}">
+		<div :class="{grid: gridView}" v-if="!activateModal">
 			<div v-for="quote in modQuotes" :key="quote.id">
 				<plan :plan="quote" @planID="handleClicked" :compareGroupFull="compareGroupFull"/>
 			</div>
@@ -40,9 +40,8 @@
 				pageTitle: "Quotes",
 				quotes: [],
 				modQuotes: [],
-				showOriginalQuotes: true,
 				filter: "",
-				gridView: false,
+				gridView: true,
 				compareGroup: [],
 				compareQuotes: [],
 				activateModal: false
@@ -168,6 +167,12 @@
 			},
 			toggleView: function() {
 				this.gridView = !this.gridView;
+			},
+			handleClearModal: function(val) {
+				this.activateModal = val;
+				this.compareGroup = [];
+				this.compareQuotes = [];
+				this.modQuotes = [...this.quotes];
 			}
 		},
 		created: function() {
@@ -195,6 +200,15 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
+	}
+	.quote-page-button {
+		height: 50px;
+		line-height: 50px;
+		border-radius: 4px;
+		background-color: #ed8029;
+		color: #fff;
+		margin: 2px 5px;
+		cursor: pointer;
 	}
 </style>
 
